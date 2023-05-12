@@ -1,33 +1,37 @@
-import 'dart:math';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:movie_app/model/movie.dart';
 
-const apiKey = '2a0f926961d00c667e191a21c14461f8';
+final apiKey = '8d808fb7b0267930fd2c1490f6f50d4b';
 
-class MovieService {
+class MovieServive {
+  // create instance of the dio
   static final dio = Dio();
+// create method of type future
 
-  static Future<Either<String, List<Movie>>> getMovieByCategory(
+  Future<Either<String, List<Movie>>> getMovieByCategory(
       {required String apiPath, required int page}) async {
     try {
-      final response = await dio.get(
-        apiPath,
-        queryParameters: {'api_key': apiKey, 'page': page},
-      );
+      /*   final response = await dio
+          .get(apiPath, queryParameters: {'api_key': apiKey, 'page': page});
+      final mil = {'page': 90, 'results': []};
 
-/*
-! Overall, this code snippet suggests that it is parsing a JSON response, extracting a list of results, and converting each result into a Movie object using a fromJson method provided by the Movie class. The resulting list is then stored in the data variable.
- 
- */
       final data = (response.data['results'] as List)
           .map((e) => Movie.fromJson(e))
           .toList();
+      return Right(data); */
+
+      final res = await dio.get(apiPath, queryParameters: {
+        'api_key': apiKey,
+        'page': page,
+      });
+
+      final data =
+          (res.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
 
       return Right(data);
-    } on DioError catch (e) {
-      return Left(e.toString());
+    } on DioError catch (err) {
+      return Left(err.toString());
     }
   }
 }
