@@ -9,7 +9,7 @@ class MovieServive {
   static final dio = Dio();
 // create method of type future
 
-  Future<Either<String, List<Movie>>> getMovieByCategory(
+  static Future<Either<String, List<Movie>>> getMovieByCategory(
       {required String apiPath, required int page}) async {
     try {
       /*   final response = await dio
